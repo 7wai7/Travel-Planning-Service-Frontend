@@ -1,4 +1,4 @@
-.auth-card {
+.auth_card {
   margin: auto;
   width: 60%;
   max-width: 900px;
@@ -11,43 +11,43 @@
   box-shadow: var(--shadow);
 }
 
-.auth-card p {
+p {
   color: var(--muted);
   font-size: 0.9rem;
 }
 
-.auth-card .left {
+.left {
   flex: 1;
   padding: 0.2rem 0.5rem;
   border-radius: var(--radius);
   background: linear-gradient(180deg, #eef2ff, #f8fafc);
 }
 
-.auth-card .left h1 {
+.left h1 {
   font-size: 1.2rem;
   color: black;
 }
 
-.auth-card .right {
+.right {
   width: 40%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.auth-card .right h3 {
+.right h3 {
   color: black;
   margin-bottom: 1rem;
 }
 
-.auth-card input {
+.auth_card input {
   width: 100%;
   padding: 4px 10px;
   margin: 0.2rem 0;
   line-height: 1.1rem;
 }
 
-.auth-card .submit-btn {
+.submit_btn {
   width: 100%;
   background-color: var(--blue);
   padding: 0.5rem 0.2rem;
@@ -55,17 +55,22 @@
   margin-top: 1.4rem;
 }
 
-.auth-card .submit-btn[disabled] {
+.submit_btn[disabled] {
   background-color: gray;
 }
 
-.auth-card .bottom {
+.bottom {
   margin-top: 1.4rem;
   align-self: flex-end;
 }
 
-.auth-card .login-btn {
+.login_btn {
   background: none;
   color: var(--blue);
   font-size: 0.9rem;
+}
+
+.error_message {
+  color: var(--red);
+  font-size: .9rem;
 }

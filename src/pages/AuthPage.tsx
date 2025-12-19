@@ -1,42 +1,60 @@
 import { useState, type FormEvent } from "react";
-import "../styles/AuthPage.css";
-
-type AuthData = {
-  name: string;
-  email: string;
-  password: string;
-};
+import css from "../styles/AuthPage.module.css";
+import type { AuthData } from "../types/AuthData";
+import { login, register } from "../services/api";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../hooks/useUser";
+import useFieldErrors from "../hooks/useFieldErrors";
+import { FieldError } from "../utils/FieldError";
 
 export default function AuthPage() {
   const [isSignup, setSignup] = useState(true);
   const [authData, setAuthData] = useState<Partial<AuthData>>({});
+  const { setUser } = useUser();
+  const navigate = useNavigate();
+  const { errors: authErrors, showErrors } = useFieldErrors();
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    console.log(authData);
+    (isSignup ? register : login)(authData as AuthData)
+      .then((user) => {
+        setUser(user);
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err.fields)
+        if (err instanceof FieldError) {
+          showErrors(err.fields);
+        }
+      });
   };
 
   return (
-    <div className="auth-card">
-      <div className="left">
+    <div className={css.auth_card}>
+      <div className={css.left}>
         <h1>Meeting Room Booking App</h1>
         <p>Registration and booking management.</p>
       </div>
-      <div className="right">
+      <div className={css.right}>
         <h3>{isSignup ? "Signup" : "Login"}</h3>
         <form onSubmit={onSubmit}>
           {isSignup && (
-            <input
-              type="text"
-              id="regName"
-              required
-              placeholder="Name"
-              value={authData?.name || ""}
-              onChange={(e) =>
-                setAuthData({ ...authData, name: e.target.value })
-              }
-            />
+            <>
+              <input
+                type="text"
+                id="regName"
+                required
+                placeholder="Name"
+                value={authData?.name || ""}
+                onChange={(e) =>
+                  setAuthData({ ...authData, name: e.target.value })
+                }
+              />
+              {authErrors.name && (
+                <p className={css.error_message}>{authErrors.name.message}</p>
+              )}
+            </>
           )}
           <input
             type="email"
@@ -48,6 +66,9 @@ export default function AuthPage() {
               setAuthData({ ...authData, email: e.target.value })
             }
           />
+          {authErrors.email && (
+            <p className={css.error_message}>{authErrors.email.message}</p>
+          )}
           <input
             type="password"
             id="regPassword"
@@ -58,9 +79,12 @@ export default function AuthPage() {
               setAuthData({ ...authData, password: e.target.value })
             }
           />
+          {authErrors.password && (
+            <p className={css.error_message}>{authErrors.password.message}</p>
+          )}
           <button
             type="submit"
-            className="submit-btn"
+            className={css.submit_btn}
             disabled={
               isSignup
                 ? !(authData.name && authData.email && authData.password) // signup
@@ -71,10 +95,10 @@ export default function AuthPage() {
           </button>
         </form>
         {isSignup && (
-          <p className="bottom">
+          <p className={css.bottom}>
             Already have an account?
             <button
-              className="login-btn"
+              className={css.login_btn}
               type="button"
               onClick={() => setSignup(false)}
             >

@@ -8,3 +8,8 @@
 .page {
   height: 100%;
 }
+
+img {
+  display: block;
+  max-width: 100%;
+}
