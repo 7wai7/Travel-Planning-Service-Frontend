@@ -20,7 +20,7 @@ export default function CreateRoomModal({ isOpen, setIsOpen }: Props) {
   } = useMutation({
     mutationFn: createRoomApi,
     onSuccess: (data) => {
-      queryClient.setQueryData(["rooms-list"], (prev: MeetingRoom[]) => [
+      queryClient.setQueryData<MeetingRoom[]>(["rooms-list"], (prev = []) => [
         ...prev,
         data,
       ]);
@@ -69,10 +69,7 @@ export default function CreateRoomModal({ isOpen, setIsOpen }: Props) {
         {error && <p className={css.error_message}>{error.message}</p>}
         {isPending && (
           <div className={css.pending_panel}>
-            <LoadingSpinner
-              size={4}
-              description="none"
-            />
+            <LoadingSpinner size={4} description="none" />
           </div>
         )}
       </form>

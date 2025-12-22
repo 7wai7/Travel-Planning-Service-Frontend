@@ -1,8 +1,12 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 import CreateRoomModal from "../components/CreateRoomModal";
-import css from "../styles/MeetingRoomsPage.module.css";
 import { RoomsList } from "../components/RoomsList";
+import { useInlineEdit } from "../hooks/useInlineEdit";
+import { updateRoomApi } from "../services/room.api";
+import css from "../styles/MeetingRoomsPage.module.css";
 import type { MeetingRoom } from "../types/MeetingRoom";
+import AutoResizeTextarea from "../components/AutoResizeTextarea";
 
 export default function MeetingRoomsPage() {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -39,15 +43,50 @@ interface RoomDetailsProps {
 }
 
 function RoomDetails({ r }: RoomDetailsProps) {
+  const queryClient = useQueryClient();
+
+  const { mutate: updateRoom, error } = useMutation({
+    mutationFn: updateRoomApi,
+    onSuccess: (updatedRoom) => {
+      queryClient.setQueryData<MeetingRoom[]>(["rooms-list"], (rooms = []) =>
+        rooms.map((room) => (room.id === updatedRoom.id ? updatedRoom : room))
+      );
+    },
+  });
+
+  const titleEdit = useInlineEdit({
+    value: r.title,
+    onSave: (title) => updateRoom({ id: r.id, input: { title } }),
+  });
+
+  const descriptionEdit = useInlineEdit({
+    value: r.description,
+    onSave: (description) => updateRoom({ id: r.id, input: { description } }),
+  });
+
   return (
     <dl className={css.details}>
       <dt>Title</dt>
-      <dd className={css.title}>{r.title}</dd>
+      <input
+        maxLength={32}
+        value={titleEdit.value}
+        onChange={(e) => titleEdit.onChange(e.target.value)}
+        onBlur={titleEdit.onBlur}
+        onKeyDown={titleEdit.onKeyDown}
+      />
 
       <dt>Description</dt>
-      <dd className={css.description}>{r.description}</dd>
+      <AutoResizeTextarea
+        maxLength={5000}
+        value={descriptionEdit.value}
+        onChange={(e) => descriptionEdit.onChange(e.target.value)}
+        onBlur={descriptionEdit.onBlur}
+        onKeyDown={descriptionEdit.onKeyDown}
+      />
 
-      <hr/>
+      {error && <p>{error.message}</p>}
+
+      <hr />
 
       <dt>Owner</dt>
       <dd className={css.owner}>-</dd>

@@ -41,8 +41,21 @@
 }
 
 .details dd,
-.details hr {
+.details hr,
+.details input,
+.details textarea {
   margin-bottom: 0.5rem;
+}
+
+.details textarea {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.details input,
+.details textarea {
+  padding: 0.2rem 0.1rem;
+  width: 100%;
 }
 
 .placeholder {
