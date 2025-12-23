@@ -1,19 +1,27 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import css from "../styles/Modal.module.css";
-import GenericModal from "./GenericModal";
-import type { Booking, BookingInput } from "../types/Booking";
 import { createBookingApi, getAllRoomsApi } from "../services/api";
+import css from "../styles/Modal.module.css";
+import type { Booking, BookingInput } from "../types/Booking";
+import { combineDateAndTimeToTimestamp } from "../utils/date";
+import GenericModal from "./GenericModal";
 import { Select } from "./Select";
-import { formatDateInput, formatTimeInput, buildLocalISO } from "../utils/date";
 
 interface Props {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+type UiState = {
+  roomId?: string;
+  date?: string; // YYYY-MM-DD
+  startTime?: string; // HH:mm
+  endTime?: string; // HH:mm
+  description?: string;
+};
+
 export default function CreateBookingModal({ isOpen, setIsOpen }: Props) {
-  const [input, setInput] = useState<Partial<BookingInput>>({});
+  const [ui, setUi] = useState<UiState>({});
   const queryClient = useQueryClient();
 
   const { data: rooms = [] } = useQuery({
@@ -23,12 +31,13 @@ export default function CreateBookingModal({ isOpen, setIsOpen }: Props) {
   });
 
   const onSuccess = (data: Booking) => {
+    console.log(data)
     queryClient.setQueryData<Booking[]>(["bookings-list"], (prev = []) => [
       ...prev,
       data,
     ]);
     setIsOpen(false);
-    setInput({});
+    setUi({});
   };
 
   if (!isOpen) return;
@@ -38,33 +47,42 @@ export default function CreateBookingModal({ isOpen, setIsOpen }: Props) {
     value: room.id,
   }));
 
+  const canSubmit =
+    ui.roomId && ui.date && ui.startTime && ui.endTime && ui.description;
+
   return (
-    <GenericModal
+    <GenericModal<BookingInput, Booking>
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       onSuccess={onSuccess}
       mutationFn={createBookingApi}
-      getInput={() => input as Booking}
+      getInput={() => {
+        if (!canSubmit) throw new Error("Invalid input");
+        const startAt = combineDateAndTimeToTimestamp(ui.date!, ui.startTime!);
+        const endAt = combineDateAndTimeToTimestamp(ui.date!, ui.endTime!);
+
+        return {
+          roomId: ui.roomId!,
+          startAt,
+          endAt,
+          description: ui.description!,
+        };
+      }}
     >
       {/* Room */}
       <Select
-        value={input.roomId ?? undefined}
+        value={ui.roomId}
         options={roomOptions}
         placeholder="Choose room"
-        onChange={(roomId) => setInput((prev) => ({ ...prev, roomId }))}
+        onChange={(roomId) => setUi((prev) => ({ ...prev, roomId }))}
       />
 
       {/* Date (only date) */}
       <input
         type="date"
         required
-        value={formatDateInput(input.date)}
-        onChange={(e) =>
-          setInput((prev) => ({
-            ...prev,
-            date: e.target.value,
-          }))
-        }
+        value={ui.date || ""}
+        onChange={(e) => setUi((prev) => ({ ...prev, date: e.target.value }))}
         onClick={(e) => {
           const input = e.currentTarget as HTMLInputElement;
           input.showPicker?.();
@@ -75,15 +93,10 @@ export default function CreateBookingModal({ isOpen, setIsOpen }: Props) {
       <input
         type="time"
         required
-        value={formatTimeInput(input.start)}
-        onChange={(e) => {
-          if (!input.date) return;
-
-          setInput((prev) => ({
-            ...prev,
-            start: buildLocalISO(input.date!, e.target.value),
-          }));
-        }}
+        value={ui.startTime || ""}
+        onChange={(e) =>
+          setUi((prev) => ({ ...prev, startTime: e.target.value }))
+        }
         onClick={(e) => {
           const input = e.currentTarget as HTMLInputElement;
           input.showPicker?.();
@@ -94,15 +107,10 @@ export default function CreateBookingModal({ isOpen, setIsOpen }: Props) {
       <input
         type="time"
         required
-        value={formatTimeInput(input.end)}
-        onChange={(e) => {
-          if (!input.date) return;
-
-          setInput((prev) => ({
-            ...prev,
-            end: buildLocalISO(input.date!, e.target.value),
-          }));
-        }}
+        value={ui.endTime || ""}
+        onChange={(e) =>
+          setUi((prev) => ({ ...prev, endTime: e.target.value }))
+        }
         onClick={(e) => {
           const input = e.currentTarget as HTMLInputElement;
           input.showPicker?.();
@@ -117,10 +125,15 @@ export default function CreateBookingModal({ isOpen, setIsOpen }: Props) {
         placeholder="description"
         className="textarea-autosize"
         maxLength={5000}
-        value={input.description || ""}
-        onChange={(e) => setInput({ ...input, description: e.target.value })}
+        value={ui.description || ""}
+        onChange={(e) =>
+          setUi((prev) => ({
+            ...prev,
+            description: e.target.value,
+          }))
+        }
       />
-      <button type="submit" className={css.submit_btn}>
+      <button type="submit" className={css.submit_btn} disabled={!canSubmit}>
         Create
       </button>
     </GenericModal>

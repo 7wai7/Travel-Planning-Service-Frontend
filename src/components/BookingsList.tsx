@@ -61,17 +61,17 @@ function BookingItem({ data, onClick }: BookingItemProps) {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
-  }).format(new Date(data.date));
+  }).format(data.startAt);
 
   const formattedStartTime = new Intl.DateTimeFormat("uk-UA", {
     hour: "2-digit",
     minute: "2-digit",
-  }).format(new Date(data.start));
+  }).format(data.startAt);
 
   const formattedEndTime = new Intl.DateTimeFormat("uk-UA", {
     hour: "2-digit",
     minute: "2-digit",
-  }).format(new Date(data.end));
+  }).format(data.endAt);
 
   return (
     <div className={clsx(css.bookings_item, css.grid)} onClick={onClick}>

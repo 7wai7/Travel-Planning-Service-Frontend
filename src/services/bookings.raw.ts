@@ -5,34 +5,48 @@ import type { Session, User } from "../types/User";
 
 export const createBookingRaw = (input: BookingInput) => {
   const session = read<Session | null>(LS.SESSION, null);
-  if (!session) return null;
+  if (!session) {
+    throw new Error("Unauthorized");
+  }
 
   const rooms: MeetingRoom[] = read(LS.ROOMS, []);
   const bookings: Booking[] = read(LS.BOOKINGS, []);
 
   const room = rooms.find((r) => r.id === input.roomId);
-  if (!room) throw new Error("Room not found");
+  if (!room) {
+    throw new Error("Room not found");
+  }
 
-  const newStart = new Date(input.start).getTime();
-  const newEnd = new Date(input.end).getTime();
+  const { startAt, endAt } = input;
 
-  if (newEnd <= newStart) throw new Error("End time must be after start time");
+  // Базова валідація
+  if (!Number.isFinite(startAt) || !Number.isFinite(endAt)) {
+    throw new Error("Invalid time values");
+  }
 
-  // Перевірка на конфлікт часу
+  if (endAt <= startAt) {
+    throw new Error("End time must be after start time");
+  }
+
+  // Перевірка конфлікту
   const hasConflict = bookings.some((b) => {
     if (b.roomId !== input.roomId) return false;
-    const start = new Date(b.start).getTime();
-    const end = new Date(b.end).getTime();
-    // Перетин інтервалів: [newStart, newEnd] vs [start, end]
-    return newStart < end && newEnd > start;
+
+    // b.startAt / b.endAt — теж number
+    return startAt < b.endAt && endAt > b.startAt;
   });
 
-  if (hasConflict) throw new Error("Time conflict with existing booking");
+  if (hasConflict) {
+    throw new Error("Time conflict with existing booking");
+  }
 
   const newBooking: Booking = {
     id: crypto.randomUUID(),
     ownerId: session.userId,
-    ...input,
+    roomId: input.roomId,
+    startAt,
+    endAt,
+    description: input.description,
   };
 
   write(LS.BOOKINGS, [...bookings, newBooking]);
@@ -40,7 +54,7 @@ export const createBookingRaw = (input: BookingInput) => {
   return {
     ...newBooking,
     room,
-    isOwn: true
+    isOwn: true,
   };
 };
 

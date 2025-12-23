@@ -3,9 +3,8 @@ import type { User } from "./User";
 
 export type BookingInput = {
   roomId: string;
-  date: string;
-  start: string;
-  end: string;
+  startAt: number; // timestamp (ms)
+  endAt: number;   // timestamp (ms)
   description: string;
 };
 

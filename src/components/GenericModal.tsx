@@ -3,27 +3,27 @@ import css from "../styles/Modal.module.css";
 import LoadingSpinner from "./LoadingSpinner";
 import { useMutation } from "@tanstack/react-query";
 
-interface GenericModalProps<T> {
+interface GenericModalProps<T, E> {
   isOpen: boolean;
   setIsOpen: (v: boolean) => void;
-  mutationFn: (input: T) => Promise<unknown>;
-  onSuccess: (data: T) => void;
+  mutationFn: (input: T) => Promise<E>;
+  onSuccess: (data: E) => void;
   getInput: () => T;
   children: ReactNode; // Поля форми
 }
 
-export default function GenericModal<T>({
+export default function GenericModal<T, E>({
   isOpen,
   setIsOpen,
   mutationFn,
   onSuccess,
   getInput,
   children,
-}: GenericModalProps<T>) {
+}: GenericModalProps<T, E>) {
   const { mutate, isPending, error } = useMutation({
     mutationFn,
     onSuccess: (data) => {
-      onSuccess(data as T);
+      onSuccess(data as E);
       setIsOpen(false);
     },
   });
