@@ -1,23 +1,24 @@
 import { Link } from "react-router-dom";
 import css from "../styles/SideBar.module.css";
-import { useAuth } from "../hooks/useAuth";
+import useUserStore from "../stores/UserStore";
 
 export default function SideBar() {
-  const { user, logout } = useAuth();
+  const { user, logout } = useUserStore();
 
   return (
     <section className={css.sidebar}>
       <nav>
-        <Link to={"/rooms"}>Meeting rooms</Link>
-        <Link to={"/bookings"}>Bookings</Link>
+        <Link to={"/trips"}>My trips</Link>
       </nav>
       <hr />
       <p className={css.profile_top}>Profile</p>
       <div>
-        <p className={css.username}>{user!.name}</p>
+        <p className={css.username}>{user!.username}</p>
         <p className={css.email}>{user!.email}</p>
       </div>
-      <button className={css.logout_btn} onClick={logout}>Logout</button>
+      <button className={css.logout_btn} onClick={logout}>
+        Logout
+      </button>
     </section>
   );
 }

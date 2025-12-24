@@ -1,1 +1,1 @@
-# Booking meeting rooms frontend
+# Travel planning service frontend

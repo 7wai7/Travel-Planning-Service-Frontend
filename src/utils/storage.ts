@@ -1,10 +1,3 @@
-export const LS = {
-  USERS: "demo_users",
-  SESSION: "demo_session", // імітація httpOnly cookie
-  ROOMS: "demo_rooms",
-  BOOKINGS: "demo_bookings",
-};
-
 export const read = <T>(k: string, fallback: T): T => {
   const raw = localStorage.getItem(k);
   if (!raw) return fallback;

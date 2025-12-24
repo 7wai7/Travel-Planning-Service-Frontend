@@ -1,6 +1,6 @@
 interface Props {
   size?: number;
-  description?: string | "none";
+  description?: string;
   className?: string;
 }
 

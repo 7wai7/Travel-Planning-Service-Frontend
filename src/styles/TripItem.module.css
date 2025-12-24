@@ -1,0 +1,42 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: var(--radius);
+  padding: 0.8rem 1rem;
+  box-shadow: -.2rem 0 0 0 var(--blue);
+}
+
+.title {
+  color: black;
+  font-size: 1rem;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.date {
+  font-size: .9rem;
+  color: black;
+}
+
+
+.places_list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.place_name {
+  color: var(--muted);
+  font-size: 0.9rem;
+  position: relative;
+}
+
+.place_name:not(:last-child)::after {
+  content: "•";
+  margin: 0 0.2rem;
+  color: var(--blue);
+  font-size: 1.2rem;
+}

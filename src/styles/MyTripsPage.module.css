@@ -3,7 +3,7 @@
   font-size: 1rem;
 }
 
-.create_booking_btn {
+.create_trip_btn {
   background-color: var(--blue);
   padding: 0.5rem 0.9rem;
   margin-left: auto;
@@ -11,9 +11,9 @@
   margin-bottom: 1rem;
 }
 
-.bookings_list_section {
-  display: flex;
-  flex-direction: row;
+.trips_list_section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   width: 100%;
   height: 100%;
