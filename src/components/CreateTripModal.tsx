@@ -19,10 +19,9 @@ export default function CreateRoomModal() {
   const queryClient = useQueryClient();
 
   const onSuccess = (data: Trip) => {
-    console.log("created trip", data);
     queryClient.setQueryData<Trip[]>(["my-trips-list"], (prev = []) => [
-      ...prev,
       data,
+      ...prev,
     ]);
     setIsOpen(false);
     setUi({});

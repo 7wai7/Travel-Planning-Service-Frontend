@@ -6,6 +6,7 @@ import MyTripsPage from "./pages/MyTripsPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import NotFoundPage from "./pages/NotFoundPage";
 import MainPage from "./pages/MainPage";
+import TripPage from "./pages/TripPage";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<MainPage />} />
             <Route path="/trips" element={<MyTripsPage />} />
-            {/* <Route path="/trips/:id" element={} /> */}
+            <Route path="/trips/:id" element={<TripPage />} />
           </Route>
         </Route>
 

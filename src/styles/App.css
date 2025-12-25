@@ -19,7 +19,7 @@ button[disabled] {
 
 .textarea-autosize {
   display: block;
-  overflow: hidden;
+  overflow-x: hidden;
   resize: none;
   outline: none;
   text-align: justify;
@@ -29,6 +29,7 @@ button[disabled] {
   background-color: unset;
   width: 100%;
   min-height: 2rem;
+  max-height: 300px;
 }
 
 .loading-card {
@@ -61,4 +62,31 @@ button[disabled] {
 .error_message {
   color: var(--red) !important;
   font-size: 0.9rem;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-btn {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-content {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  border-radius: 12px;
+  background-color: var(--bg);
+}
+
+.vertical-hr {
+  width: 1px;
+  background-color: lightgrey;
+  border: none;
+  margin: 0;
 }

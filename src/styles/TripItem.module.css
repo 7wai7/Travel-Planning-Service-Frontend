@@ -1,27 +1,50 @@
 .card {
   display: flex;
   flex-direction: column;
+  align-items: start;
   background-color: white;
   border-radius: var(--radius);
   padding: 0.8rem 1rem;
-  box-shadow: -.2rem 0 0 0 var(--blue);
+  box-shadow: -0.2rem 0 0 0 var(--blue);
+  cursor: pointer;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.title,
+.description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
 
 .title {
   color: black;
   font-size: 1rem;
+  font-weight: 400;
+
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
 }
 
 .description {
   font-size: 0.9rem;
   color: var(--muted);
+
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
 }
 
 .date {
-  font-size: .9rem;
+  font-size: 0.9rem;
   color: black;
 }
-
 
 .places_list {
   display: flex;
@@ -39,4 +62,25 @@
   margin: 0 0.2rem;
   color: var(--blue);
   font-size: 1.2rem;
+  line-height: 0;
+  /* vertical-align: middle; */
+}
+
+.my_role {
+  margin-top: 1rem;
+  background-color: rgba(189, 189, 189, 0.4);
+  color: rgb(47, 47, 47);
+  padding: 0.05rem 1rem;
+  font-size: 0.6rem;
+  border-radius: var(--radius);
+}
+
+.owner {
+  background-color: rgba(153, 255, 0, 0.4);
+  color: green;
+}
+
+.collaborator {
+  background-color: rgba(0, 251, 255, 0.4);
+  color: blue;
 }

@@ -10,4 +10,11 @@ export type CreateTripRequest = {
 export type Trip = {
   id: number;
   places?: Place[];
+  tripParticipants?: TripParticipant[];
 } & CreateTripRequest;
+
+export type TripParticipant = {
+  role: TripRole;
+};
+
+export type TripRole = "OWNER" | "COLLABORATOR" | "USER";

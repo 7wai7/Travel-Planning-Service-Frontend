@@ -1,5 +1,6 @@
-export const formatDateInput = (date?: string) =>
-  date ? date.slice(0, 10) : "";
+export const formatDateInput = (date?: string) => {
+  return date? new Date(date).toLocaleDateString() : ""
+}
 
 export const formatTimeInput = (date?: string) =>
   date ? date.slice(11, 16) : "";

@@ -15,7 +15,7 @@ export default function MyTripsPage() {
     error,
   } = useQuery({
     queryKey: ["my-trips-list"],
-    queryFn: () => getMyTripsApi({ places: true }),
+    queryFn: () => getMyTripsApi(["places"]),
   });
 
   return (

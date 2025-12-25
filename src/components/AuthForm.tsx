@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import css from "../styles/AuthPage.module.css";
 import { useMutation } from "@tanstack/react-query";
@@ -14,10 +14,16 @@ export default function AuthForm({ isSignup }: Props) {
   const [authValues, setAuthValues] = useState<Partial<RegisterRequest>>({});
   const navigate = useNavigate();
 
-  const { mutate: auth, error } = useMutation({
+  const {
+    mutate: auth,
+    error,
+    reset,
+  } = useMutation({
     mutationFn: isSignup ? register : login,
     onSuccess: () => navigate("/"),
   });
+
+  useEffect(reset, [isSignup, reset]);
 
   const canSubmit = isSignup
     ? !(authValues.username && authValues.email && authValues.password) // signup
@@ -67,7 +73,7 @@ export default function AuthForm({ isSignup }: Props) {
       <button type="submit" className={css.submit_btn} disabled={canSubmit}>
         {isSignup ? "Signup" : "Login"}
       </button>
-      {error && <p className={css.error_message}>{error.message}</p>}
+      {error && <p className={css.error_message}>{Array.isArray(error.message) ? error.message[0] : error.message}</p>}
     </form>
   );
 }

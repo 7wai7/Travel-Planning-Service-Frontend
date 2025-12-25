@@ -68,4 +68,6 @@
 
 .error_message {
   color: var(--red) !important;
+  text-align: center;
+  margin-top: 1rem;
 }

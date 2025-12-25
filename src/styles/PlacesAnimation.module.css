@@ -1,0 +1,99 @@
+.places_container {
+  position: relative;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5rem auto 3rem;
+}
+
+/* Лінія */
+.anim_bg {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 3px;
+  width: 0;
+  background: var(--blue);
+  border-radius: 50px;
+  animation-name: trip_anim;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+@keyframes trip_anim {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Елементи */
+.anim_item {
+  position: relative;
+  z-index: 2;
+}
+
+.location_name {
+  position: absolute;
+  transform: translateX(-50%) translateY(-250%);
+  font-size: 0.85rem;
+  color: black;
+  white-space: nowrap;
+}
+
+/* Іконки */
+.icon {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100%);
+  transition: color 0.4s ease, stroke 0.4s ease, transform 0.4s ease;
+}
+
+.icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.icon svg {
+  transition: stroke 0.2s ease-in;
+}
+
+.location_name {
+  transition: color 0.2s ease-in;
+}
+
+/* Стани */
+.anim_item.visited {
+  animation: visited_anim 0.5s ease-in;
+  animation-fill-mode: forwards;
+}
+
+.location_name.not_visited {
+  color: lightgray;
+}
+
+.not_visited svg {
+  stroke: lightgray;
+}
+
+.visited svg {
+  stroke: lightgreen;
+}
+
+@keyframes visited_anim {
+  0% {
+    scale: 1;
+  }
+  40% {
+    scale: 1.2;
+  }
+  100% {
+    scale: 1;
+  }
+}
