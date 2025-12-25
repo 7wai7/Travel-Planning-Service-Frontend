@@ -254,6 +254,9 @@
   justify-content: space-between;
   align-items: center;
 }
+.modal_header h3 {
+  color: black;
+}
 .modal_body {
   margin-top: 12px;
 }

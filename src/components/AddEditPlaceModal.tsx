@@ -10,8 +10,8 @@ type OnSubmitValues = {
 };
 
 type Props = {
-  onClose: () => void;
-  onSubmit: (values: OnSubmitValues) => Promise<void>;
+  onClose?: () => void;
+  onSubmit?: (values: OnSubmitValues) => Promise<void>;
 };
 
 const EMPTY_VALUES: OnSubmitValues = {
@@ -21,7 +21,7 @@ const EMPTY_VALUES: OnSubmitValues = {
 };
 
 export default function AddEditPlaceModal({ onClose, onSubmit }: Props) {
-  const { isOpenModal, editingPlace } = usePlaceStore();
+  const { isOpenModal, editingPlace, set: setPlaceStore } = usePlaceStore();
 
   const [values, setValues] = useState<OnSubmitValues>(EMPTY_VALUES);
 
@@ -57,11 +57,12 @@ export default function AddEditPlaceModal({ onClose, onSubmit }: Props) {
     setError(null);
     setLoading(true);
     try {
-      await onSubmit({
+      await onSubmit?.({
         locationName: values.locationName,
         dayNumber: values.dayNumber,
         notes: values.notes,
       });
+      setPlaceStore({ editingPlace: null, isOpenModal: false });
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Failed to save");
     } finally {
@@ -74,13 +75,6 @@ export default function AddEditPlaceModal({ onClose, onSubmit }: Props) {
       <div className={css.modal}>
         <div className={css.modal_header}>
           <h3>{isEdit ? "Edit place" : "Add place"}</h3>
-          <button
-            className={css.close_btn}
-            onClick={onClose}
-            aria-label="Close"
-          >
-            ✕
-          </button>
         </div>
         <div className={css.modal_body}>
           {error && <div className={css.form_error}>{error}</div>}
@@ -121,7 +115,13 @@ export default function AddEditPlaceModal({ onClose, onSubmit }: Props) {
         </div>
 
         <div className={css.modal_footer}>
-          <button className={css.secondary_btn} onClick={onClose}>
+          <button
+            className={css.secondary_btn}
+            onClick={() => {
+              onClose?.();
+              setPlaceStore({ editingPlace: null, isOpenModal: false });
+            }}
+          >
             Cancel
           </button>
           <button
