@@ -13,7 +13,7 @@ type UiState = {
   description?: string;
 };
 
-export default function CreateRoomModal() {
+export default function CreateTripModal() {
   const { isOpenModal: isOpen, setIsOpenModal: setIsOpen } = useTripsStore();
   const [ui, setUi] = useState<UiState>({});
   const queryClient = useQueryClient();

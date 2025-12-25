@@ -63,6 +63,7 @@ export default function AddEditPlaceModal({ onClose, onSubmit }: Props) {
         notes: values.notes,
       });
       setPlaceStore({ editingPlace: null, isOpenModal: false });
+      setValues(EMPTY_VALUES);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Failed to save");
     } finally {

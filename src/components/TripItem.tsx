@@ -3,8 +3,6 @@ import type { Place } from "../services/api/places/places.types";
 import type { Trip } from "../services/api/trips/trips.types";
 import css from "../styles/TripItem.module.css";
 import { formatDateInput } from "../utils/date";
-import Dropdown from "./Dropdown";
-import { Ellipsis } from "lucide-react";
 import clsx from "clsx";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -33,11 +31,11 @@ export default function TripItem({ trip }: Props) {
     <div className={css.card} onClick={onClick}>
       <div className={css.header}>
         <h3 className={css.title}>{trip.title}</h3>
-        <Dropdown icon={() => <Ellipsis color="black" />}>
+        {/* <Dropdown icon={() => <Ellipsis color="black" />}>
           <>
             <button>Delete</button>
           </>
-        </Dropdown>
+        </Dropdown> */}
       </div>
       <PlacesList places={trip.places ?? []} />
       {trip.description && (

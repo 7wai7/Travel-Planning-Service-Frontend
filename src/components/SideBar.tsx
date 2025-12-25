@@ -8,6 +8,7 @@ export default function SideBar() {
   return (
     <section className={css.sidebar}>
       <nav>
+        <Link to={"/"}>Main</Link>
         <Link to={"/trips"}>My trips</Link>
       </nav>
       <hr />
