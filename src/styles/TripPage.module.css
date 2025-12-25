@@ -117,12 +117,6 @@
   color: #c53030;
 }
 
-/* trip details layout */
-.trip_details {
-  display: flex;
-  flex-direction: column;
-}
-
 /* description and dates */
 .description,
 .dates {

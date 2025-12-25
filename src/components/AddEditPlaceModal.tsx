@@ -1,49 +1,66 @@
-import { useState } from "react";
-import type { Place } from "../services/api/places/places.types";
+import { useEffect, useState } from "react";
+import usePlaceStore from "../stores/PlaceStore";
 import css from "../styles/TripPage.module.css";
 import AutoResizeTextarea from "./AutoResizeTextarea";
 
-type Props = {
-  initialPlace?: Place;
-  onClose: () => void;
-  onSubmit: (values: {
-    locationName: string;
-    dayNumber: number;
-    notes?: string;
-  }) => Promise<void>;
+type OnSubmitValues = {
+  locationName: string;
+  dayNumber: number;
+  notes?: string;
 };
 
-export default function AddEditPlaceModal({
-  initialPlace,
-  onClose,
-  onSubmit,
-}: Props) {
-  const [locationName, setLocationName] = useState(
-    initialPlace?.locationName ?? ""
-  );
-  const [dayNumber, setDayNumber] = useState(initialPlace?.dayNumber ?? "");
-  const [notes, setNotes] = useState(initialPlace?.notes ?? "");
+type Props = {
+  onClose: () => void;
+  onSubmit: (values: OnSubmitValues) => Promise<void>;
+};
+
+const EMPTY_VALUES: OnSubmitValues = {
+  locationName: "",
+  dayNumber: 1,
+  notes: undefined,
+};
+
+export default function AddEditPlaceModal({ onClose, onSubmit }: Props) {
+  const { isOpenModal, editingPlace } = usePlaceStore();
+
+  const [values, setValues] = useState<OnSubmitValues>(EMPTY_VALUES);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const isEdit = Boolean(initialPlace);
+  useEffect(() => {
+    if (editingPlace) {
+      setValues({
+        locationName: editingPlace.locationName,
+        dayNumber: editingPlace.dayNumber,
+        notes: editingPlace.notes ?? "",
+      });
+    } else {
+      setValues(EMPTY_VALUES);
+    }
+  }, [editingPlace]);
+
+  const isEdit = Boolean(editingPlace);
+
+  if (!isOpenModal) return;
 
   const submit = async () => {
-    if (!locationName.trim()) {
+    if (!values.locationName?.trim()) {
       setError("Location name is required");
       return;
     }
-    if (!dayNumber || isNaN(Number(dayNumber))) {
+    if (!values.dayNumber || isNaN(values.dayNumber)) {
       setError("Day number must be a number");
       return;
     }
+
     setError(null);
     setLoading(true);
     try {
       await onSubmit({
-        locationName: locationName.trim(),
-        dayNumber: Number(dayNumber),
-        notes,
+        locationName: values.locationName,
+        dayNumber: values.dayNumber,
+        notes: values.notes,
       });
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Failed to save");
@@ -53,7 +70,7 @@ export default function AddEditPlaceModal({
   };
 
   return (
-    <div className={css.modal_overlay} role="dialog" aria-modal="true">
+    <div className={css.modal_overlay}>
       <div className={css.modal}>
         <div className={css.modal_header}>
           <h3>{isEdit ? "Edit place" : "Add place"}</h3>
@@ -70,8 +87,10 @@ export default function AddEditPlaceModal({
           <label className={css.form_label}>
             Location name
             <input
-              value={locationName}
-              onChange={(e) => setLocationName(e.target.value)}
+              value={values.locationName}
+              onChange={(e) =>
+                setValues({ ...values, locationName: e.target.value })
+              }
               className={css.form_input}
               placeholder="e.g. Old Town"
             />
@@ -80,8 +99,10 @@ export default function AddEditPlaceModal({
           <label className={css.form_label}>
             Day number
             <input
-              value={dayNumber}
-              onChange={(e) => setDayNumber(e.target.value)}
+              value={values.dayNumber}
+              onChange={(e) =>
+                setValues({ ...values, dayNumber: Number(e.target.value) })
+              }
               className={css.form_input}
               type="number"
               min={1}
@@ -91,8 +112,8 @@ export default function AddEditPlaceModal({
           <label className={css.form_label}>
             Notes (optional)
             <AutoResizeTextarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              value={values.notes}
+              onChange={(e) => setValues({ ...values, notes: e.target.value })}
               className={css.form_textarea}
               rows={3}
             />

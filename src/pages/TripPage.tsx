@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddEditPlaceModal from "../components/AddEditPlaceModal";
 import ConfirmDialog from "../components/ConfirmDialog";
@@ -11,30 +11,22 @@ import {
   useDeletePlace,
   useUpdatePlace,
 } from "../hooks/places.hooks";
+import { useDeleteTrip, useTrip } from "../hooks/trips.hooks";
 import type {
   CreatePlaceInput,
-  Place,
   UpdatePlaceInput,
 } from "../services/api/places/places.types";
+import useConfirmDialogStore from "../stores/ConfirmDialogStore";
+import usePlaceStore from "../stores/PlaceStore";
 import css from "../styles/TripPage.module.css";
 import { formatDateInput } from "../utils/date";
-import { useDeleteTrip, useTrip } from "../hooks/trips.hooks";
 
 export default function TripPage() {
   const tripId = Number(useParams().id);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
-  const [editingPlace, setEditingPlace] = useState<Place | null>(null);
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
-  const [confirm, setConfirm] = useState<{
-    open: boolean;
-    subject: "place" | "trip" | null;
-    payload?: unknown;
-    title?: string;
-    description?: string;
-  }>({ open: false, subject: null });
-
+  const setPlaceStore = usePlaceStore((s) => s.set);
+  const setConfirm = useConfirmDialogStore((s) => s.setConfirm);
   const { data: trip, isLoading, error } = useTrip(tripId);
 
   const sortedPlaces = useMemo(() => {
@@ -63,8 +55,7 @@ export default function TripPage() {
 
   // ----- Handlers -----
   const openAddPlace = () => {
-    setEditingPlace(null);
-    setAddModalOpen(true);
+    setPlaceStore({ editingPlace: null, isOpenModal: true });
   };
 
   const handleCreatePlace = async (
@@ -75,7 +66,7 @@ export default function TripPage() {
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["trip-page", tripId] });
-          setAddModalOpen(false);
+          setPlaceStore({ isOpenModal: false });
         },
       }
     );
@@ -89,8 +80,7 @@ export default function TripPage() {
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["trip-page", tripId] });
-          setEditingPlace(null);
-          setAddModalOpen(false);
+          setPlaceStore({ editingPlace: null, isOpenModal: false });
         },
       }
     );
@@ -98,27 +88,28 @@ export default function TripPage() {
 
   const handleDeletePlaceConfirm = (placeId: number) => {
     setConfirm({
-      open: true,
-      subject: "place",
-      payload: placeId,
+      isOpen: true,
       title: "Delete place",
       description:
         "Are you sure you want to delete this place? This action cannot be undone.",
+      subject: "place",
+      payload: placeId,
     });
   };
 
   const handleDeleteTripConfirm = () => {
     setConfirm({
-      open: true,
-      subject: "trip",
-      payload: tripId,
+      isOpen: true,
       title: "Delete trip",
       description:
         "Delete entire trip and all places? This action cannot be undone.",
+      subject: "trip",
+      payload: tripId,
     });
   };
 
   const runConfirm = async () => {
+    const confirm = useConfirmDialogStore.getState();
     if (!confirm.subject) return;
 
     if (confirm.subject === "place") {
@@ -131,7 +122,7 @@ export default function TripPage() {
         {
           onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["trip-page", tripId] });
-            setConfirm({ open: false, subject: null });
+            setConfirm({ isOpen: false, subject: null });
           },
         }
       );
@@ -177,95 +168,88 @@ export default function TripPage() {
         </div>
       </header>
 
-      <section className={css.trip_details}>
-        <PlacesAnimation places={trip.places ?? []} />
-        <div className={`${css.details} ${css.card}`}>
-          <p className={css.description}>
-            <strong>Description: </strong>
-            {trip.description ? trip.description : "-"}
-          </p>
+      <PlacesAnimation places={sortedPlaces} />
 
-          <p className={css.dates}>
-            <strong>Dates: </strong>
-            {trip.startDate && trip.endDate ? (
-              <>
-                {formatDateInput(trip.startDate)} &mdash;{" "}
-                {formatDateInput(trip.endDate)}
-              </>
-            ) : (
-              "-"
-            )}
-          </p>
+      <section className={`${css.details} ${css.card}`}>
+        <p className={css.description}>
+          <strong>Description: </strong>
+          {trip.description ? trip.description : "-"}
+        </p>
 
-          <div className={css.places_section}>
-            <div className={css.places_header}>
-              <strong>Places</strong>
-              <div className={css.places_actions}>
-                {canEditPlaces && (
-                  <button className={css.add_place_btn} onClick={openAddPlace}>
-                    + Add place
-                  </button>
-                )}
-                <span className={css.places_count}>
-                  {sortedPlaces.length}{" "}
-                  {sortedPlaces.length === 1 ? "place" : "places"}
-                </span>
-              </div>
+        <p className={css.dates}>
+          <strong>Dates: </strong>
+          {trip.startDate && trip.endDate ? (
+            <>
+              {formatDateInput(trip.startDate)} &mdash;{" "}
+              {formatDateInput(trip.endDate)}
+            </>
+          ) : (
+            "-"
+          )}
+        </p>
+
+        <div className={css.places_section}>
+          <div className={css.places_header}>
+            <strong>Places</strong>
+            <div className={css.places_actions}>
+              {canEditPlaces && (
+                <button className={css.add_place_btn} onClick={openAddPlace}>
+                  + Add place
+                </button>
+              )}
+              <span className={css.places_count}>
+                {sortedPlaces.length}{" "}
+                {sortedPlaces.length === 1 ? "place" : "places"}
+              </span>
             </div>
-
-            {sortedPlaces.length === 0 ? (
-              <div className={css.empty_state}>
-                <p className={css.placeholder}>The trip hasn't places yet.</p>
-                {canEditPlaces && (
-                  <button className={css.add_place_btn} onClick={openAddPlace}>
-                    Add first place
-                  </button>
-                )}
-              </div>
-            ) : (
-              <ul className={css.places_list}>
-                {sortedPlaces.map((place) => (
-                  <li key={place.id}>
-                    <PlaceItem
-                      place={place}
-                      canEdit={canEditPlaces}
-                      onEdit={() => {
-                        setEditingPlace(place);
-                        setAddModalOpen(true);
-                      }}
-                      onDelete={() => handleDeletePlaceConfirm(place.id)}
-                    />
-                  </li>
-                ))}
-              </ul>
-            )}
           </div>
+
+          {sortedPlaces.length === 0 ? (
+            <div className={css.empty_state}>
+              <p className={css.placeholder}>The trip hasn't places yet.</p>
+              {canEditPlaces && (
+                <button className={css.add_place_btn} onClick={openAddPlace}>
+                  Add first place
+                </button>
+              )}
+            </div>
+          ) : (
+            <ul className={css.places_list}>
+              {sortedPlaces.map((place) => (
+                <li key={place.id}>
+                  <PlaceItem
+                    place={place}
+                    canEdit={canEditPlaces}
+                    onEdit={() =>
+                      setPlaceStore({ editingPlace: place, isOpenModal: true })
+                    }
+                    onDelete={() => handleDeletePlaceConfirm(place.id)}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
 
-      {isAddModalOpen && (
-        <AddEditPlaceModal
-          initialPlace={editingPlace ?? undefined}
-          onClose={() => {
-            setAddModalOpen(false);
-            setEditingPlace(null);
-          }}
-          onSubmit={async (values) => {
-            if (editingPlace) {
-              await handleUpdatePlace({ ...values, id: editingPlace.id });
-            } else {
-              const dayNum = Number(values.dayNumber);
-              await handleCreatePlace({ ...values, dayNumber: dayNum });
-            }
-          }}
-        />
-      )}
+      <AddEditPlaceModal
+        onClose={() =>
+          setPlaceStore({ editingPlace: null, isOpenModal: false })
+        }
+        onSubmit={async (values) => {
+          const { editingPlace } = usePlaceStore.getState();
+
+          if (editingPlace) {
+            await handleUpdatePlace({ ...values, id: editingPlace.id });
+          } else {
+            const dayNum = Number(values.dayNumber);
+            await handleCreatePlace({ ...values, dayNumber: dayNum });
+          }
+        }}
+      />
 
       <ConfirmDialog
-        open={confirm.open}
-        title={confirm.title ?? ""}
-        description={confirm.description ?? ""}
-        onCancel={() => setConfirm({ open: false, subject: null })}
+        onCancel={() => setConfirm({ isOpen: false, subject: null })}
         onConfirm={runConfirm}
       />
     </>

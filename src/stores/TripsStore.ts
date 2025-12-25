@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-interface IUserState {
+interface ITripsState {
   isOpenModal: boolean;
   setIsOpenModal: (value: boolean) => void;
 }
 
-const useTripsStore = create<IUserState>((set) => ({
+const useTripsStore = create<ITripsState>((set) => ({
   isOpenModal: false,
   setIsOpenModal: (value) => set({ isOpenModal: value }),
 }));
