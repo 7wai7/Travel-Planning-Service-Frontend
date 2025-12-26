@@ -19,11 +19,8 @@ export default function NotFoundPage() {
     >
       <div style={{ fontSize: "96px", fontWeight: 700 }}>404</div>
 
-      <h2 style={{ fontSize: "24px", margin: 0 }}>Meeting room not found</h2>
-
       <p style={{ maxWidth: "420px", color: "#9ca3af" }}>
-        The page you are trying to access does not exist or has been moved. The
-        meeting room might have been deleted or never booked.
+        The page you are trying to access does not exist or has been moved.
       </p>
 
       <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>

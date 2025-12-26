@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTripPermissions } from "../hooks/useTripPermissions.hook";
 import type { Trip } from "../services/api/trips/trips.types";
 import useConfirmDialogStore from "../stores/ConfirmDialogStore";
@@ -51,6 +51,13 @@ export default function TripHeader({ trip }: Props) {
 
         {isOwner && (
           <div className={css.owner_controls}>
+            <Link
+              to={`/trips/${trip.id}/access`}
+              className={css.invite_trip_btn}
+            >
+              Invite
+            </Link>
+
             <button className={css.edit_trip_btn} onClick={() => onEdit()}>
               Edit trip
             </button>

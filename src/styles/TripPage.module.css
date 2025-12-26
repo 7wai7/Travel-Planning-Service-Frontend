@@ -101,13 +101,13 @@
   display: flex;
   gap: 10px;
 }
+.invite_trip_btn,
 .edit_trip_btn,
 .delete_trip_btn {
-  border: none;
   padding: 8px 12px;
-  border-radius: 10px;
-  cursor: pointer;
+  border-radius: var(--radius);
 }
+.invite_trip_btn,
 .edit_trip_btn {
   background: #eef2ff;
   color: #2731f1;
@@ -214,7 +214,6 @@
   border: none;
   padding: 8px 12px;
   border-radius: 10px;
-  cursor: pointer;
 }
 .primary_btn {
   background: linear-gradient(180deg, #5b6cff, #3b4dff);

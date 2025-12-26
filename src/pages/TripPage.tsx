@@ -1,27 +1,15 @@
-import { useParams } from "react-router-dom";
 import AddEditPlaceModal from "../components/AddEditPlaceModal";
 import ConfirmDialog from "../components/ConfirmDialog";
-import LoadingSpinner from "../components/LoadingSpinner";
 import { PlacesAnimation } from "../components/PlacesAnimation";
 import TripDetailsSection from "../components/TripDetailsSection";
 import TripHeader from "../components/TripHeader";
-import { useTrip } from "../hooks/trips.hooks";
+import { useTrip } from "../hooks/useTrip.hook";
 import { useTripPlaces } from "../hooks/useTripPlaces.hook";
 import usePlaceStore from "../stores/PlaceStore";
 
 export default function TripPage() {
-  const tripId = Number(useParams().id);
-  const { data: trip, isLoading, error } = useTrip(tripId);
-
-  const { sortedPlaces, create, update } = useTripPlaces(trip!);
-
-  if (isLoading) return <LoadingSpinner />;
-  if (error || !trip)
-    return (
-      <p className="error_message">
-        {error?.message ?? "Oops. Something went wrong."}
-      </p>
-    );
+  const { trip } = useTrip();
+  const { sortedPlaces, create, update } = useTripPlaces(trip);
 
   return (
     <>

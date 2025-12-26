@@ -7,6 +7,8 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import NotFoundPage from "./pages/NotFoundPage";
 import MainPage from "./pages/MainPage";
 import TripPage from "./pages/TripPage";
+import TripAccessPage from "./pages/TripAccessPage";
+import { TripProvider } from "./components/TripProvider";
 
 function App() {
   return (
@@ -18,7 +20,22 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<MainPage />} />
             <Route path="/trips" element={<MyTripsPage />} />
-            <Route path="/trips/:id" element={<TripPage />} />
+            <Route
+              path="/trips/:id"
+              element={
+                <TripProvider>
+                  <TripPage />
+                </TripProvider>
+              }
+            />
+            <Route
+              path="/trips/:id/access"
+              element={
+                <TripProvider>
+                  <TripAccessPage />
+                </TripProvider>
+              }
+            />
           </Route>
         </Route>
 

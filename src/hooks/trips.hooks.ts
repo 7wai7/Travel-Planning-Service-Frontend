@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createTripApi, deleteTripApi, getTripByIdApi } from "../services/api/trips/trips.api";
 
-export function useTrip(tripId: number) {
+export function useQueryTrip(tripId: number) {
   return useQuery({
     queryKey: ["trip-page", tripId],
     queryFn: () => getTripByIdApi(tripId, ["places", "tripParticipants"]),
