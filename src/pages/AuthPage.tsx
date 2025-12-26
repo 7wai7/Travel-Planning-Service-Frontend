@@ -3,7 +3,7 @@ import AuthForm from "../components/AuthForm";
 import css from "../styles/AuthPage.module.css";
 
 export default function AuthPage() {
-  const [isSignup, setSignup] = useState(true);
+  const [isSignup, setSignup] = useState(false);
 
   return (
     <div className={css.auth_card}>

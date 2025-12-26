@@ -1,5 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createTripApi, deleteTripApi, getTripByIdApi } from "../services/api/trips/trips.api";
+import {
+  createTripApi,
+  deleteTripApi,
+  getTripByIdApi,
+  inviteTripApi,
+} from "../services/api/trips/trips.api";
 
 export function useQueryTrip(tripId: number) {
   return useQuery({
@@ -19,5 +24,11 @@ export function useCreateTrip() {
 export function useDeleteTrip() {
   return useMutation({
     mutationFn: deleteTripApi,
+  });
+}
+
+export function useInviteTrip() {
+  return useMutation({
+    mutationFn: inviteTripApi,
   });
 }

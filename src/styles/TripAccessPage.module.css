@@ -1,4 +1,44 @@
 .header {
-    font-size: 1rem;
-    color: black;
+  font-size: 1.5rem;
+  color: black;
+  margin-bottom: 2rem;
+}
+
+/* Access Form */
+.access_form {
+  background-color: white;
+  border-radius: var(--radius);
+  padding: 1rem;
+  max-width: 50%;
+}
+
+.form_label {
+  color: black;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.send_invite_btn {
+  padding: 0.2rem 0.5rem;
+  background-color: var(--green);
+  color: rgb(0, 71, 0);
+  border-color: rgba(0, 128, 0, 0.499);
+}
+
+.form_bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.access_form input {
+  flex: 1;
+  padding: 0.4rem 0.3rem;
+}
+
+.error_message {
+  margin-top: 1rem;
+  text-align: center;
 }
