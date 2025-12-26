@@ -1,5 +1,5 @@
 import AddEditPlaceModal from "../components/AddEditPlaceModal";
-import ConfirmDialog from "../components/ConfirmDialog";
+import ConfirmDialog from "../components/ui/ConfirmDialog";
 import { PlacesAnimation } from "../components/PlacesAnimation";
 import TripDetailsSection from "../components/TripDetailsSection";
 import TripHeader from "../components/TripHeader";

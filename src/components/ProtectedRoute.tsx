@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "./ui/LoadingSpinner";
 import useUserStore from "../stores/UserStore";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";

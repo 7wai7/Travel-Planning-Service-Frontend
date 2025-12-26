@@ -1,6 +1,6 @@
 import React from "react";
 import css from "../styles/Modal.module.css";
-import AutoResizeTextarea from "./AutoResizeTextarea";
+import AutoResizeTextarea from "./ui/AutoResizeTextarea";
 import type { UiState } from "../hooks/useTripModal";
 
 type Props = {

@@ -1,4 +1,4 @@
-import Modal from "./Modal";
+import Modal from "./ui/Modal";
 import TripForm from "./TripForm";
 import { useTripModal } from "../hooks/useTripModal";
 

@@ -3,6 +3,7 @@ import {
   createTripApi,
   deleteTripApi,
   editTripApi,
+  getMyTripsApi,
   getTripByIdApi,
   inviteTripApi,
 } from "../services/api/trips/trips.api";
@@ -11,12 +12,19 @@ import type {
   Trip,
 } from "../services/api/trips/trips.types";
 
-export function useQueryTrip(tripId: number) {
+export function useQueryTrip(tripId: number, include: string[] = []) {
   return useQuery({
     queryKey: ["trip-page", tripId],
-    queryFn: () => getTripByIdApi(tripId, ["places", "tripParticipants"]),
+    queryFn: () => getTripByIdApi(tripId, include),
     enabled: Number.isFinite(tripId),
     staleTime: 1000 * 60, // 1 хвилина
+  });
+}
+
+export function useGetMyTrips(include: string[] = []) {
+  return useQuery({
+    queryKey: ["my-trips-list"],
+    queryFn: () => getMyTripsApi(include),
   });
 }
 

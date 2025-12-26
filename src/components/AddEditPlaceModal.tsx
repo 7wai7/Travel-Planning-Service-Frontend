@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import usePlaceStore from "../stores/PlaceStore";
 import css from "../styles/TripPage.module.css";
-import AutoResizeTextarea from "./AutoResizeTextarea";
+import AutoResizeTextarea from "./ui/AutoResizeTextarea";
 
 type OnSubmitValues = {
   locationName: string;

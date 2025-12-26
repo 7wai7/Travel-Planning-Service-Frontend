@@ -1,5 +1,5 @@
-import useConfirmDialogStore from "../stores/ConfirmDialogStore";
-import css from "../styles/TripPage.module.css";
+import useConfirmDialogStore from "../../stores/ConfirmDialogStore";
+import css from "../../styles/TripPage.module.css";
 
 export default function ConfirmDialog() {
   const { isOpen, title, description, onCancel, onConfirm, reset } =

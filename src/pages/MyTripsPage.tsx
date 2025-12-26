@@ -1,21 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import TripItem from "../components/TripItem";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
+import { useGetMyTrips } from "../hooks/trips.hooks";
 import useTripsStore from "../stores/TripsStore";
 import css from "../styles/MyTripsPage.module.css";
-import { getMyTripsApi } from "../services/api/trips/trips.api";
-import TripItem from "../components/TripItem";
-import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function MyTripsPage() {
-  const { setTripsStore } = useTripsStore();
-
-  const {
-    data: trips = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["my-trips-list"],
-    queryFn: () => getMyTripsApi(["places"]),
-  });
+  const setTripsStore = useTripsStore((s) => s.setTripsStore);
+  const { data: trips = [], isLoading, error } = useGetMyTrips(["places"]);
 
   return (
     <>

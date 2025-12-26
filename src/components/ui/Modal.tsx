@@ -1,6 +1,6 @@
 
 import { type ReactNode, useEffect } from "react";
-import css from "../styles/Modal.module.css";
+import css from "../../styles/Modal.module.css";
 
 interface ModalProps {
   isOpen: boolean;
