@@ -1,4 +1,4 @@
-.modal {
+.modal_overlay {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.207);
@@ -9,7 +9,7 @@
   z-index: 9999;
 }
 
-.modal form {
+.modal {
   border-radius: var(--radius);
   background: var(--bg);
   width: 60%;
@@ -41,10 +41,17 @@
   margin-bottom: 1rem;
 }
 
+.cancel_btn {
+  background-color: gray;
+}
+
 .submit_btn {
-  width: 100%;
-  padding: 0.5rem 0;
   background-color: var(--blue);
+}
+
+.cancel_btn,
+.submit_btn {
+  padding: 0.5rem .7rem;
 }
 
 .pending_panel {
@@ -53,6 +60,10 @@
   inset: 0;
   display: flex;
   background-color: rgba(0, 0, 0, 0.322);
+}
+.modal_title {
+  color: black;
+  margin-bottom: 1rem;
 }
 
 .error_message {
@@ -65,4 +76,13 @@
   text-align: center;
   padding: 0.5rem 0;
   border-radius: var(--radius);
+}
+
+.modal_actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: end;
+  gap: 1rem;
 }

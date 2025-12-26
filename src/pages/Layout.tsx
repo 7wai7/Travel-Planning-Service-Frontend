@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import SideBar from "../components/SideBar";
+import TripModal from "../components/TripModal";
 
 function Layout() {
   return (
@@ -8,6 +9,7 @@ function Layout() {
       <main className="page-content">
         <Outlet />
       </main>
+      <TripModal />
     </>
   );
 }

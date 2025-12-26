@@ -1,9 +1,17 @@
 import api from "../axios";
 import { fetcher } from "../fetcher";
-import type { CreateTripRequest, InviteTripRequest, Trip } from "./trips.types";
+import type {
+  CreateTripRequest,
+  InviteTripRequest,
+  Trip,
+  UpdateTripRequest,
+} from "./trips.types";
 
 export const createTripApi = (data: CreateTripRequest) =>
   fetcher<Trip>(api.post("/trips", data));
+
+export const editTripApi = async (data: UpdateTripRequest) =>
+  fetcher<Trip>(api.put(`/trips/${data.id}`, data));
 
 export const getMyTripsApi = async (include: string[] = []) =>
   fetcher<Trip[]>(

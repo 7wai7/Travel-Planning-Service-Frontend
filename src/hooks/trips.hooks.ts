@@ -1,11 +1,15 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createTripApi,
   deleteTripApi,
+  editTripApi,
   getTripByIdApi,
   inviteTripApi,
 } from "../services/api/trips/trips.api";
-import type { InviteTripRequest } from "../services/api/trips/trips.types";
+import type {
+  InviteTripRequest,
+  Trip,
+} from "../services/api/trips/trips.types";
 
 export function useQueryTrip(tripId: number) {
   return useQuery({
@@ -17,14 +21,33 @@ export function useQueryTrip(tripId: number) {
 }
 
 export function useCreateTrip() {
+  const qc = useQueryClient();
+
   return useMutation({
     mutationFn: createTripApi,
+    onSuccess: (data: Trip) => {
+      qc.setQueryData<Trip[] | undefined>(["my-trips-list"], (prev) =>
+        prev ? [data, ...prev] : [data]
+      );
+    },
   });
 }
 
 export function useDeleteTrip() {
   return useMutation({
     mutationFn: deleteTripApi,
+  });
+}
+
+export function useEditTrip() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: editTripApi,
+    onSuccess: (data: Trip) => {
+      qc.invalidateQueries({ queryKey: ["my-trips-list"] });
+      qc.invalidateQueries({ queryKey: ["trip-page", data.id] });
+    },
   });
 }
 

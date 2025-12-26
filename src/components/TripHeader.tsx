@@ -5,6 +5,7 @@ import useConfirmDialogStore from "../stores/ConfirmDialogStore";
 import css from "../styles/TripPage.module.css";
 import { useDeleteTrip } from "../hooks/trips.hooks";
 import { useQueryClient } from "@tanstack/react-query";
+import useTripsStore from "../stores/TripsStore";
 
 interface Props {
   trip: Trip;
@@ -13,6 +14,7 @@ interface Props {
 export default function TripHeader({ trip }: Props) {
   const queryClient = useQueryClient();
   const { role, isOwner } = useTripPermissions(trip);
+  const setTripsStore = useTripsStore((s) => s.setTripsStore);
   const navigate = useNavigate();
   const setConfirm = useConfirmDialogStore((s) => s.setConfirm);
   const deleteTrip = useDeleteTrip();
@@ -37,8 +39,7 @@ export default function TripHeader({ trip }: Props) {
   };
 
   const onEdit = () => {
-    /* TODO: open edit trip modal or navigate to edit page */
-    navigate(`/trips/${trip.id}/edit`);
+    setTripsStore({ isOpenModal: true, editingTrip: trip });
   };
 
   return (

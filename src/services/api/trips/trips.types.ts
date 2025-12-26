@@ -13,6 +13,10 @@ export type Trip = {
   tripParticipants?: TripParticipant[];
 } & CreateTripRequest;
 
+export type UpdateTripRequest = {
+  id: number;
+} & Partial<CreateTripRequest>;
+
 export type TripParticipant = {
   role: TripRole;
 };
@@ -20,6 +24,6 @@ export type TripParticipant = {
 export type TripRole = "OWNER" | "COLLABORATOR" | "USER";
 
 export type InviteTripRequest = {
-  tripId: number,
-  email: string
-}
+  tripId: number;
+  email: string;
+};
