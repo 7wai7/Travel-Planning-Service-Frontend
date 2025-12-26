@@ -16,15 +16,15 @@ export default function AuthPage() {
         <AuthForm
           isSignup={isSignup}
         />
-        {isSignup && (
+        {!isSignup && (
           <p className={css.bottom}>
-            Already have an account?
+            Don't have an account?
             <button
               className={css.login_btn}
               type="button"
-              onClick={() => setSignup(false)}
+              onClick={() => setSignup(true)}
             >
-              Login.
+              Signup.
             </button>
           </p>
         )}
