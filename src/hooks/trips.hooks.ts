@@ -5,6 +5,7 @@ import {
   getTripByIdApi,
   inviteTripApi,
 } from "../services/api/trips/trips.api";
+import type { InviteTripRequest } from "../services/api/trips/trips.types";
 
 export function useQueryTrip(tripId: number) {
   return useQuery({
@@ -28,7 +29,11 @@ export function useDeleteTrip() {
 }
 
 export function useInviteTrip() {
-  return useMutation({
+  return useMutation<
+    { token: string; inviteLink: string },
+    Error,
+    InviteTripRequest
+  >({
     mutationFn: inviteTripApi,
   });
 }

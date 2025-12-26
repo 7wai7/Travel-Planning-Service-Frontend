@@ -9,7 +9,7 @@ type AccessValues = {
 
 export default function AccessForm() {
   const [values, setValues] = useState<Partial<AccessValues>>({});
-  const { mutate, error, reset, isPending } = useInviteTrip();
+  const { data, mutate, error, reset, isPending } = useInviteTrip();
   const { trip } = useTrip();
 
   const onSubmit = async (e: FormEvent) => {
@@ -34,10 +34,22 @@ export default function AccessForm() {
           }
         />
 
-        <button type="submit" className={css.send_invite_btn} disabled={isPending}>
+        <button
+          type="submit"
+          className={css.send_invite_btn}
+          disabled={isPending}
+        >
           Send invite
         </button>
       </div>
+      {data && (
+        <div className={css.invite_data}>
+          <label className={css.form_label}>Invite link:</label>
+          <a href={data.inviteLink} target="_blank" rel="noopener noreferrer">
+            {data.inviteLink}
+          </a>
+        </div>
+      )}
       {error && (
         <p className={`error_message ${css.error_message}`}>{error.message}</p>
       )}
