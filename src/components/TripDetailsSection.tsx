@@ -3,8 +3,6 @@ import { useTripPermissions } from "../hooks/useTripPermissions.hook";
 import { useTripPlaces } from "../hooks/useTripPlaces.hook";
 import type { Trip } from "../services/api/trips/trips.types";
 import usePlaceStore from "../stores/PlaceStore";
-
-import css from "../styles/TripPage.module.css";
 import { formatDateInput } from "../utils/date";
 
 interface Props {
@@ -17,14 +15,14 @@ export default function TripDetailsSection({ trip }: Props) {
   const { sortedPlaces, openAdd } = useTripPlaces(trip!);
 
   return (
-    <section className={`${css.details} ${css.card}`}>
-      <p className={css.description}>
-        <strong>Description: </strong>
+    <section className={`mt-2 bg-white py-3 px-4 rounded-2xl`}>
+      <p className="text-sm text-(--muted) my-2">
+        <strong className="text-black">Description: </strong>
         {trip.description ? trip.description : "-"}
       </p>
 
-      <p className={css.dates}>
-        <strong>Dates: </strong>
+      <p className="mt-1.5 mb-3 text-blue-900">
+        <strong className="text-black">Dates: </strong>
         {trip.startDate && trip.endDate ? (
           <>
             {formatDateInput(trip.startDate)} &mdash;{" "}
@@ -35,16 +33,16 @@ export default function TripDetailsSection({ trip }: Props) {
         )}
       </p>
 
-      <div className={css.places_section}>
-        <div className={css.places_header}>
-          <strong>Places</strong>
-          <div className={css.places_actions}>
+      <div className="mt-2.5">
+        <div className="flex justify-between items-center">
+          <strong className="text-black">Places</strong>
+          <div className="flex items-center gap-3">
             {canEditPlaces && (
-              <button className={css.add_place_btn} onClick={openAdd}>
+              <button className="interact py-2 px-3 rounded-lg bg-linear-to-b from-[#6c63ff] to-[#5748d8]" onClick={openAdd}>
                 + Add place
               </button>
             )}
-            <span className={css.places_count}>
+            <span className="text-sm text-gray-500">
               {sortedPlaces.length}{" "}
               {sortedPlaces.length === 1 ? "place" : "places"}
             </span>
@@ -52,16 +50,16 @@ export default function TripDetailsSection({ trip }: Props) {
         </div>
 
         {sortedPlaces.length === 0 ? (
-          <div className={css.empty_state}>
-            <p className={css.placeholder}>The trip hasn't places yet.</p>
+          <div className="p-5 bg-(--bg) rounded-lg border border-blue-200 border-dashed mt-2.5">
+            <p className="text-black mb-2">The trip hasn't places yet.</p>
             {canEditPlaces && (
-              <button className={css.add_place_btn} onClick={openAdd}>
+              <button className="interact py-2 px-3 rounded-lg bg-linear-to-b from-[#6c63ff] to-[#5748d8]" onClick={openAdd}>
                 Add first place
               </button>
             )}
           </div>
         ) : (
-          <ul className={css.places_list}>
+          <ul className="mt-3 grid grid-cols-1 gap-2">
             {sortedPlaces.map((place) => (
               <li key={place.id}>
                 <PlaceItem

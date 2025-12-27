@@ -2,10 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTripPermissions } from "../hooks/useTripPermissions.hook";
 import type { Trip } from "../services/api/trips/trips.types";
 import useConfirmDialogStore from "../stores/ConfirmDialogStore";
-import css from "../styles/TripPage.module.css";
 import { useDeleteTrip } from "../hooks/trips.hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import useTripsStore from "../stores/TripsStore";
+import clsx from "clsx";
 
 interface Props {
   trip: Trip;
@@ -43,28 +43,37 @@ export default function TripHeader({ trip }: Props) {
   };
 
   return (
-    <header className={css.headerRow}>
-      <h1 className={css.header}>{trip.title}</h1>
-      <div className={css.headerActions}>
-        <div className={css.role_badge} data-role={role}>
+    <header className="flex items-center justify-between flex-row gap-8 mb-3">
+      <h1 className="text-black text-3xl font-bold">{trip.title}</h1>
+      <div className="flex items-center gap-3">
+        <div
+          className={clsx(
+            "font-semibold px-3 py-1 rounded-full text-sm border",
+            role === "OWNER" &&
+              "text-green-600 bg-green-100 border-green-600",
+            role === "COLLABORATOR" &&
+              "text-blue-600 bg-blue-100 border-blue-600",
+            role === "USER" && "text-neutral-600 bg-neutral-100 border-transparent"
+          )}
+        >
           {role}
         </div>
 
         {isOwner && (
-          <div className={css.owner_controls}>
+          <div className="flex gap-2.5">
             <Link
               to={`/trips/${trip.id}/access`}
-              className={css.invite_trip_btn}
+              className="interact py-2 px-3 bg-blue-50 border-blue-100 hover:border-blue-400 text-blue-500"
             >
               Invite
             </Link>
 
-            <button className={css.edit_trip_btn} onClick={() => onEdit()}>
+            <button className="interact py-2 px-3 bg-blue-50 border-blue-100 hover:border-blue-400 text-blue-500" onClick={() => onEdit()}>
               Edit trip
             </button>
 
             <button
-              className={css.delete_trip_btn}
+              className="interact py-2 px-3 bg-red-100 text-red-400 hover:border-red-400"
               onClick={() => {
                 handleDeleteTripConfirm();
               }}

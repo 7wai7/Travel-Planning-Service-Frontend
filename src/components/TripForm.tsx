@@ -1,5 +1,4 @@
 import React from "react";
-import css from "../styles/Modal.module.css";
 import AutoResizeTextarea from "./ui/AutoResizeTextarea";
 import type { UiState } from "../hooks/useTripModal";
 
@@ -24,43 +23,40 @@ export default function TripForm({
 }: Props) {
   return (
     <form
-      className={css.form}
+      className="flex flex-col justify-between h-full gap-4"
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit();
       }}
     >
       <input
+        className="form-element p-1 text-black"
         type="text"
         maxLength={64}
         value={ui.title}
-        onChange={(e) =>
-          onChange((p) => ({ ...p, title: e.target.value }))
-        }
+        onChange={(e) => onChange((p) => ({ ...p, title: e.target.value }))}
         required
         placeholder="Trip title"
       />
 
       <input
+        className="form-element p-1 text-black"
         type="date"
         value={ui.startDate}
-        onChange={(e) =>
-          onChange((p) => ({ ...p, startDate: e.target.value }))
-        }
+        onChange={(e) => onChange((p) => ({ ...p, startDate: e.target.value }))}
         onClick={(e) => e.currentTarget.showPicker?.()}
       />
 
       <input
+        className="form-element p-1 text-black"
         type="date"
         value={ui.endDate}
-        onChange={(e) =>
-          onChange((p) => ({ ...p, endDate: e.target.value }))
-        }
+        onChange={(e) => onChange((p) => ({ ...p, endDate: e.target.value }))}
         onClick={(e) => e.currentTarget.showPicker?.()}
       />
 
       <AutoResizeTextarea
-        className={`${css.form_textarea} textarea-autosize`}
+        className={`form-element p-1 text-black max-h-72`}
         maxLength={5000}
         rows={4}
         value={ui.description}
@@ -72,10 +68,10 @@ export default function TripForm({
 
       {error && <p className="error_message">{error.message}</p>}
 
-      <div className={css.modal_actions}>
+      <div className="flex flex-row gap-4 h-10 justify-end">
         <button
           type="button"
-          className={css.cancel_btn}
+          className="bg-gray-500 text-white px-2 rounded-xl"
           onClick={onCancel}
           disabled={isSubmitting}
         >
@@ -84,7 +80,7 @@ export default function TripForm({
 
         <button
           type="submit"
-          className={css.submit_btn}
+          className="bg-(--blue) text-white px-2 rounded-xl"
           disabled={isSubmitting || !ui.title.trim()}
         >
           {isEditing ? "Save" : "Create"}

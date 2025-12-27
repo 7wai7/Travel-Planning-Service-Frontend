@@ -11,8 +11,8 @@ function Dropdown({ icon, className = "", children }: Props) {
   const [isHide, setIsHide] = useState(true);
 
   return (
-    <div className={`dropdown ${className}`} onClick={() => setIsHide(!isHide)}>
-      <button className="dropdown-btn">
+    <div className={`relative ${className}`} onClick={() => setIsHide(!isHide)}>
+      <button className="w-8 h-8 flex items-center justify-center">
         {icon ? (
           icon(isHide)
         ) : isHide ? (
@@ -21,7 +21,7 @@ function Dropdown({ icon, className = "", children }: Props) {
           <ChevronDown color="black" />
         )}
       </button>
-      {!isHide && <nav className="dropdown-content">{children}</nav>}
+      {!isHide && <nav className="absolute bottom-full right-0 rounded-xl bg-white shadow-(--shadow)">{children}</nav>}
     </div>
   );
 }

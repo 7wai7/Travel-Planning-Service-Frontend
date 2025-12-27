@@ -11,7 +11,7 @@ export function TripProvider({ children }: { children: ReactNode }) {
   if (isLoading) return <LoadingSpinner />;
   if (error || !trip) {
     return (
-      <p className="error_message">
+      <p className="text-red-500 text-sm">
         {error?.message ?? "Oops. Something went wrong."}
       </p>
     );

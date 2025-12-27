@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Satoshi", "sans-serif";
+  --color-primary: #ff0000;
+
+  --animate-visited-anim: visited_anim 0.5s ease-out;
+
+  @keyframes visited_anim {
+    0% {
+      scale: 1;
+    }
+    40% {
+      scale: 1.2;
+    }
+    100% {
+      scale: 1;
+    }
+  }
+
+  --animate-trip-anim: trip_anim linear;
+
+  @keyframes trip_anim {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  --animate-spin: spin 1s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@source '../../node_modules/my-library/**/*.{js,ts}';
+
+@layer base {
+  .form-element {
+    @apply border border-gray-200
+         transition duration-300 ease-in-out hover:border-(--blue) rounded-lg;
+  }
+
+  .interact {
+    @apply border border-transparent transition duration-300 ease-in-out hover:border-(--blue) rounded-lg cursor-pointer;
+  }
+
+  .modal-overlay {
+    @apply fixed inset-0 bg-black/75 flex items-center justify-center z-50;
+  }
+
+  .modal {
+    @apply bg-white rounded-2xl;
+  }
+}

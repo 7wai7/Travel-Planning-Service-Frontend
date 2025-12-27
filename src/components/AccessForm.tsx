@@ -1,5 +1,4 @@
 import { useState, type FormEvent } from "react";
-import css from "../styles/TripAccessPage.module.css";
 import { useInviteTrip } from "../hooks/trips.hooks";
 import { useTrip } from "../hooks/useTrip.hook";
 
@@ -21,10 +20,11 @@ export default function AccessForm() {
   };
 
   return (
-    <form className={css.access_form} onSubmit={onSubmit}>
-      <label className={css.form_label}>Invite Collaborator</label>
-      <div className={css.form_bottom}>
+    <form className="bg-white rounded-2xl p-4 max-w-[50%]" onSubmit={onSubmit}>
+      <h3 className="text-black mb-3">Invite Collaborator</h3>
+      <div className="w-full flex flex-row gap-4">
         <input
+          className="form-element flex-1 p-1 text-black"
           name="accessEmail"
           required
           type="email"
@@ -36,22 +36,22 @@ export default function AccessForm() {
 
         <button
           type="submit"
-          className={css.send_invite_btn}
+          className="interact py-1 px-2 bg-green-50 hover:bg-green-100 text-green-500 border-green-100 hover:border-green-400 disabled:bg-gray-100 disabled:text-gray-500 disabled:border-gray-300 disabled:cursor-default"
           disabled={isPending}
         >
           Send invite
         </button>
       </div>
       {data && (
-        <div className={css.invite_data}>
-          <label className={css.form_label}>Invite link:</label>
-          <a href={data.inviteLink} target="_blank" rel="noopener noreferrer">
+        <div className="mt-4 flex flex-com items-start">
+          <label className="text-sm text-gray-500 mb-1 text-nowrap mr-1">Invite link:</label>
+          <a href={data.inviteLink} className="text-indigo-400 hover:text-indigo-600" target="_blank" rel="noopener noreferrer">
             {data.inviteLink}
           </a>
         </div>
       )}
       {error && (
-        <p className={`error_message ${css.error_message}`}>{error.message}</p>
+        <p className={`text-red-500 text-sm mt-4 text-center`}>{error.message}</p>
       )}
     </form>
   );

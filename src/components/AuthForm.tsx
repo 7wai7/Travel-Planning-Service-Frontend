@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import css from "../styles/AuthPage.module.css";
 import { useMutation } from "@tanstack/react-query";
 import type { RegisterRequest } from "../services/api/auth/auth.types";
 import useUserStore from "../stores/UserStore";
@@ -37,6 +36,7 @@ export default function AuthForm({ isSignup }: Props) {
       }}
     >
       <input
+        className="form-element text-black w-full px-1 py-1 my-2"
         type="text"
         id="regName"
         required
@@ -49,6 +49,7 @@ export default function AuthForm({ isSignup }: Props) {
       {isSignup && (
         <>
           <input
+            className="form-element text-black w-full px-1 py-1 my-2"
             type="email"
             id="regEmail"
             required
@@ -61,6 +62,7 @@ export default function AuthForm({ isSignup }: Props) {
         </>
       )}
       <input
+        className="form-element text-black w-full px-1 py-1 my-2"
         type="password"
         id="regPassword"
         required
@@ -70,10 +72,18 @@ export default function AuthForm({ isSignup }: Props) {
           setAuthValues({ ...authValues, password: e.target.value })
         }
       />
-      <button type="submit" className={css.submit_btn} disabled={canSubmit}>
+      <button
+        type="submit"
+        className="form-element text-white bg-(--blue) rounded-xl w-full py-2 mt-4"
+        disabled={canSubmit}
+      >
         {isSignup ? "Signup" : "Login"}
       </button>
-      {error && <p className={css.error_message}>{Array.isArray(error.message) ? error.message[0] : error.message}</p>}
+      {error && (
+        <p className="text-red-500 text-center mt-3">
+          {Array.isArray(error.message) ? error.message[0] : error.message}
+        </p>
+      )}
     </form>
   );
 }

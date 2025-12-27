@@ -1,6 +1,4 @@
-
 import { type ReactNode, useEffect } from "react";
-import css from "../../styles/Modal.module.css";
 
 interface ModalProps {
   isOpen: boolean;
@@ -32,7 +30,7 @@ export default function Modal({
 
   return (
     <div
-      className={css.modal_overlay}
+      className="modal-overlay"
       onMouseDown={() => {
         if (closeOnBackdrop) onClose();
       }}
@@ -40,17 +38,15 @@ export default function Modal({
       aria-modal="true"
     >
       <div
-        className={css.modal}
+        className="modal w-[60%] min-h-min p-4 flex flex-col relative"
         onMouseDown={(e) => e.stopPropagation()}
         aria-labelledby="modal-title"
       >
-        <header className={css.modal_header}>
-          {title && <h3 id="modal-title" className={css.modal_title}>{title}</h3>}
-        </header>
+        {title && <header className="text-black text-2xl">{title}</header>}
 
-        <div className={css.modal_body}>{children}</div>
+        <div className="mt-4 h-full">{children}</div>
 
-        {footer && <footer className={css.modal_footer}>{footer}</footer>}
+        {footer && <footer className="flex justify-end gap-2 mt-4">{footer}</footer>}
       </div>
     </div>
   );

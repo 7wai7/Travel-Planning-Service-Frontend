@@ -26,7 +26,7 @@ const AutoResizeTextarea = forwardRef<HTMLTextAreaElement, Props>(
       <textarea
         ref={ref}
         {...props}
-        className={`${props.className || ""} textarea-autosize`}
+        className={`${props.className || ""} block overflow-x-hidden resize-none text-justify whitespace-pre-wrap`}
       />
     );
   }

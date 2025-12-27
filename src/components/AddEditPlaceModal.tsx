@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import usePlaceStore from "../stores/PlaceStore";
-import css from "../styles/TripPage.module.css";
 import AutoResizeTextarea from "./ui/AutoResizeTextarea";
 
 type OnSubmitValues = {
@@ -72,52 +71,46 @@ export default function AddEditPlaceModal({ onClose, onSubmit }: Props) {
   };
 
   return (
-    <div className={css.modal_overlay}>
-      <div className={css.modal}>
-        <div className={css.modal_header}>
-          <h3>{isEdit ? "Edit place" : "Add place"}</h3>
-        </div>
-        <div className={css.modal_body}>
-          {error && <div className={css.form_error}>{error}</div>}
-          <label className={css.form_label}>
-            Location name
-            <input
-              value={values.locationName}
-              onChange={(e) =>
-                setValues({ ...values, locationName: e.target.value })
-              }
-              className={css.form_input}
-              placeholder="e.g. Old Town"
-            />
-          </label>
+    <div className="modal-overlay">
+      <div className="modal p-4 w-[50%]">
+        <h3 className="text-black text-2xl">
+          {isEdit ? "Edit place" : "Add place"}
+        </h3>
+        <div className="mt-3">
+          {error && <div className="text-red-500 text-sm">{error}</div>}
+          <label className="text-gray-500 text-sm">Location name</label>
+          <input
+            className="form-element w-full py-1 px-2.5 mt-1.5 mb-4 text-black"
+            value={values.locationName}
+            onChange={(e) =>
+              setValues({ ...values, locationName: e.target.value })
+            }
+            placeholder="e.g. Old Town"
+          />
 
-          <label className={css.form_label}>
-            Day number
-            <input
-              value={values.dayNumber}
-              onChange={(e) =>
-                setValues({ ...values, dayNumber: Number(e.target.value) })
-              }
-              className={css.form_input}
-              type="number"
-              min={1}
-            />
-          </label>
+          <label className="text-gray-500 text-sm">Day number</label>
+          <input
+            className="form-element w-full py-1 px-2.5 mt-1.5 mb-4 text-black"
+            value={values.dayNumber}
+            onChange={(e) =>
+              setValues({ ...values, dayNumber: Number(e.target.value) })
+            }
+            type="number"
+            min={1}
+          />
 
-          <label className={css.form_label}>
-            Notes (optional)
-            <AutoResizeTextarea
-              value={values.notes}
-              onChange={(e) => setValues({ ...values, notes: e.target.value })}
-              className={css.form_textarea}
-              rows={3}
-            />
-          </label>
+          <label className="text-gray-500 text-sm">Notes (optional)</label>
+          <AutoResizeTextarea
+            className="form-element w-full py-1 px-2.5 mt-1.5 mb-4 text-black max-h-72"
+            value={values.notes}
+            onChange={(e) => setValues({ ...values, notes: e.target.value })}
+            rows={3}
+          />
         </div>
 
-        <div className={css.modal_footer}>
+        <div className="flex justify-end gap-3 mt-4">
           <button
-            className={css.secondary_btn}
+            className="interact border-gray-300 hover:border-gray-700 bg-gray-100 hover:bg-gray-200 text-gray-700 py-1 px-2"
             onClick={() => {
               onClose?.();
               setPlaceStore({ editingPlace: null, isOpenModal: false });
@@ -126,7 +119,7 @@ export default function AddEditPlaceModal({ onClose, onSubmit }: Props) {
             Cancel
           </button>
           <button
-            className={css.primary_btn}
+            className="interact border-blue-300 hover:border-blue-700 bg-blue-100 hover:bg-blue-200 text-blue-700 py-1 px-2"
             onClick={submit}
             disabled={loading}
           >
