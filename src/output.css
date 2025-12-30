@@ -253,6 +253,9 @@
   .left-\[50\%\] {
     left: 50%;
   }
+  .m-auto {
+    margin: auto;
+  }
   .mx-1 {
     margin-inline: calc(var(--spacing) * 1);
   }
@@ -292,11 +295,20 @@
   .mt-5 {
     margin-top: calc(var(--spacing) * 5);
   }
+  .mt-10 {
+    margin-top: calc(var(--spacing) * 10);
+  }
   .mt-20 {
     margin-top: calc(var(--spacing) * 20);
   }
   .mt-40 {
     margin-top: calc(var(--spacing) * 40);
+  }
+  .mt-\[10\%\] {
+    margin-top: 10%;
+  }
+  .mt-\[40\%\] {
+    margin-top: 40%;
   }
   .mr-0 {
     margin-right: calc(var(--spacing) * 0);
@@ -334,11 +346,11 @@
   .mb-12 {
     margin-bottom: calc(var(--spacing) * 12);
   }
+  .mb-\[40\%\] {
+    margin-bottom: 40%;
+  }
   .ml-55 {
     margin-left: calc(var(--spacing) * 55);
-  }
-  .ml-60 {
-    margin-left: calc(var(--spacing) * 60);
   }
   .ml-auto {
     margin-left: auto;
@@ -417,9 +429,6 @@
   }
   .w-full {
     width: 100%;
-  }
-  .w-max {
-    width: max-content;
   }
   .w-min {
     width: min-content;
@@ -703,6 +712,9 @@
   .py-1 {
     padding-block: calc(var(--spacing) * 1);
   }
+  .py-1\.5 {
+    padding-block: calc(var(--spacing) * 1.5);
+  }
   .py-2 {
     padding-block: calc(var(--spacing) * 2);
   }
@@ -723,9 +735,6 @@
   }
   .text-center {
     text-align: center;
-  }
-  .text-justify {
-    text-align: justify;
   }
   .font-sans {
     font-family: var(--font-sans);
@@ -783,6 +792,9 @@
   }
   .whitespace-normal {
     white-space: normal;
+  }
+  .whitespace-nowrap {
+    white-space: nowrap;
   }
   .whitespace-pre-wrap {
     white-space: pre-wrap;
@@ -854,10 +866,6 @@
   .shadow-\[-0\.2rem_0_0_0_var\(--blue\)\] {
     --tw-shadow: -0.2rem 0 0 0 var(--tw-shadow-color, var(--blue));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
   }
   .transition-\[color\,stroke\,transform\] {
     transition-property: color,stroke,transform;
@@ -1204,11 +1212,6 @@
   inherits: false;
   initial-value: 0 0 #0000;
 }
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
-}
 @property --tw-duration {
   syntax: "*";
   inherits: false;
@@ -1278,7 +1281,6 @@
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
-      --tw-outline-style: solid;
       --tw-duration: initial;
       --tw-ease: initial;
     }

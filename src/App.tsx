@@ -1,13 +1,24 @@
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import Layout from "./pages/Layout";
 import AuthPage from "./pages/AuthPage";
-import MyTripsPage from "./pages/MyTripsPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import NotFoundPage from "./pages/NotFoundPage";
 import MainPage from "./pages/MainPage";
-import TripPage from "./pages/TripPage";
-import TripAccessPage from "./pages/TripAccessPage";
 import { TripProvider } from "./components/TripProvider";
+import LoadingSpinner from "./components/ui/LoadingSpinner";
+
+const MyTripsPage = lazy(() => import("./pages/MyTripsPage"));
+const TripPage = lazy(() => import("./pages/TripPage"));
+const TripAccessPage = lazy(() => import("./pages/TripAccessPage"));
+
+const loadingPageSpinner = (
+  <LoadingSpinner
+    description="Loading page..."
+    size={6}
+    className="mx-auto mt-[10%]"
+  />
+);
 
 function App() {
   return (
@@ -16,25 +27,27 @@ function App() {
         <Route path="/auth" element={<AuthPage />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<Layout />}>
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={loadingPageSpinner}>
+                <Layout />
+              </Suspense>
+            }
+          >
             <Route index element={<MainPage />} />
             <Route path="/trips" element={<MyTripsPage />} />
             <Route
-              path="/trips/:id"
+              path="trips/:id"
               element={
                 <TripProvider>
-                  <TripPage />
+                  <Outlet />
                 </TripProvider>
               }
-            />
-            <Route
-              path="/trips/:id/access"
-              element={
-                <TripProvider>
-                  <TripAccessPage />
-                </TripProvider>
-              }
-            />
+            >
+              <Route index element={<TripPage />} />
+              <Route path="access" element={<TripAccessPage />} />
+            </Route>
           </Route>
         </Route>
 

@@ -74,7 +74,7 @@ export default function AuthForm({ isSignup }: Props) {
       />
       <button
         type="submit"
-        className="form-element text-white bg-(--blue) rounded-xl w-full py-2 mt-4"
+        className="form-element cursor-pointer text-white bg-(--blue) rounded-xl w-full py-2 mt-4"
         disabled={canSubmit}
       >
         {isSignup ? "Signup" : "Login"}

@@ -1,35 +1,43 @@
-import { useEffect, useRef, forwardRef } from "react";
+import clsx from "clsx";
+import { useRef, forwardRef } from "react";
 
 type Props = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 const AutoResizeTextarea = forwardRef<HTMLTextAreaElement, Props>(
   (props, forwardedRef) => {
     const innerRef = useRef<HTMLTextAreaElement>(null);
-    const ref =
-      (forwardedRef as React.RefObject<HTMLTextAreaElement>) ?? innerRef;
 
-    useEffect(() => {
-      const textarea = ref.current;
-      if (!textarea) return;
+    const setRefs = (node: HTMLTextAreaElement | null) => {
+      innerRef.current = node;
 
-      const resize = () => {
-        textarea.style.height = "auto";
-        textarea.style.height = textarea.scrollHeight + "px";
-      };
+      if (typeof forwardedRef === "function") {
+        forwardedRef(node);
+      } else if (forwardedRef) {
+        forwardedRef.current = node;
+      }
+    };
 
-      resize();
-      textarea.addEventListener("input", resize);
-      return () => textarea.removeEventListener("input", resize);
-    }, [ref, props.value]);
+    const resize = (textarea: HTMLTextAreaElement) => {
+      textarea.style.height = "auto";
+      textarea.style.height = textarea.scrollHeight + "px";
+    };
 
     return (
       <textarea
-        ref={ref}
+        ref={setRefs}
         {...props}
-        className={`${props.className || ""} block overflow-x-hidden resize-none text-justify whitespace-pre-wrap`}
+        onInput={(e) => {
+          resize(e.currentTarget);
+          props.onInput?.(e);
+        }}
+        className={clsx(
+          "block overflow-x-hidden resize-none whitespace-pre-wrap",
+          props.className
+        )}
       />
     );
   }
 );
 
+AutoResizeTextarea.displayName = "AutoResizeTextarea";
 export default AutoResizeTextarea;

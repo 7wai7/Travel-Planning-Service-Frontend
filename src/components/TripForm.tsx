@@ -66,12 +66,14 @@ export default function TripForm({
         placeholder="Optional description"
       />
 
-      {error && <p className="error_message">{error.message}</p>}
+      {error && (
+        <p className="text-red-500 text-sm text-center">{error.message}</p>
+      )}
 
       <div className="flex flex-row gap-4 h-10 justify-end">
         <button
           type="button"
-          className="bg-gray-500 text-white px-2 rounded-xl"
+          className="bg-gray-500 cursor-pointer text-white px-2 rounded-xl"
           onClick={onCancel}
           disabled={isSubmitting}
         >
@@ -80,7 +82,7 @@ export default function TripForm({
 
         <button
           type="submit"
-          className="bg-(--blue) text-white px-2 rounded-xl"
+          className="bg-(--blue) cursor-pointer text-white px-2 rounded-xl"
           disabled={isSubmitting || !ui.title.trim()}
         >
           {isEditing ? "Save" : "Create"}

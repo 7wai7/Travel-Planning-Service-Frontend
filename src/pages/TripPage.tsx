@@ -1,5 +1,5 @@
 import AddEditPlaceModal from "../components/AddEditPlaceModal";
-import { PlacesAnimation } from "../components/PlacesAnimation";
+import PlacesAnimation from "../components/PlacesAnimation";
 import TripDetailsSection from "../components/TripDetailsSection";
 import TripHeader from "../components/TripHeader";
 import { useTrip } from "../hooks/useTrip.hook";

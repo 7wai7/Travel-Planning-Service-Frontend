@@ -42,6 +42,7 @@ export function useTripModal() {
 
   const isSubmitting = createMutation.isPending || editMutation.isPending;
   const error = createMutation.error || editMutation.error;
+  console.log(error)
 
   const close = () => {
     setTripsStore({ isOpenModal: false, editingTrip: null });

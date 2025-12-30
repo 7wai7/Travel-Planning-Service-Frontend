@@ -21,7 +21,7 @@ export default function LoadingSpinner({
         ></div>
         {description !== "none" && (
           <span
-            className="text-black"
+            className="text-black whitespace-nowrap"
             style={{
               fontSize: `${size * 0.2}rem`,
               fontWeight: 500,

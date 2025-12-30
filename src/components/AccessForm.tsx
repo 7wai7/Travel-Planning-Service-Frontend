@@ -8,16 +8,35 @@ type AccessValues = {
 
 export default function AccessForm() {
   const [values, setValues] = useState<Partial<AccessValues>>({});
-  const { data, mutate, error, reset, isPending } = useInviteTrip();
+  const {
+    data,
+    mutate,
+    error: mutateError,
+    reset,
+    isPending,
+  } = useInviteTrip();
+  const [error, setError] = useState<Error | null>(null);
   const { trip } = useTrip();
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     reset();
-    if (!values.email) return;
+    setError(null);
+
+    if (!trip) {
+      setError(new Error("Trip not found."));
+      return;
+    }
+
+    if (!values.email) {
+      setError(new Error("Email is request."));
+      return;
+    }
 
     mutate({ email: values.email, tripId: trip.id });
   };
+
+  const err = mutateError ?? error;
 
   return (
     <form className="bg-white rounded-2xl p-4 max-w-[50%]" onSubmit={onSubmit}>
@@ -44,14 +63,23 @@ export default function AccessForm() {
       </div>
       {data && (
         <div className="mt-4 flex flex-com items-start">
-          <label className="text-sm text-gray-500 mb-1 text-nowrap mr-1">Invite link:</label>
-          <a href={data.inviteLink} className="text-indigo-400 hover:text-indigo-600" target="_blank" rel="noopener noreferrer">
+          <label className="text-sm text-gray-500 mb-1 text-nowrap mr-1">
+            Invite link:
+          </label>
+          <a
+            href={data.inviteLink}
+            className="text-indigo-400 hover:text-indigo-600"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {data.inviteLink}
           </a>
         </div>
       )}
-      {error && (
-        <p className={`text-red-500 text-sm mt-4 text-center`}>{error.message}</p>
+      {err && (
+        <p className={`text-red-500 text-sm mt-4 text-center`}>
+          {err.message}
+        </p>
       )}
     </form>
   );

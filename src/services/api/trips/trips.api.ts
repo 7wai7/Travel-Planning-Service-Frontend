@@ -11,7 +11,10 @@ export const createTripApi = (data: CreateTripRequest) =>
   fetcher<Trip>(api.post("/trips", data));
 
 export const editTripApi = async (data: UpdateTripRequest) =>
-  fetcher<Trip>(api.put(`/trips/${data.id}`, data));
+{
+  console.log(data);
+  return fetcher<Trip>(api.put(`/trips/${data.id}`, data));
+}
 
 export const getMyTripsApi = async (include: string[] = []) =>
   fetcher<Trip[]>(
