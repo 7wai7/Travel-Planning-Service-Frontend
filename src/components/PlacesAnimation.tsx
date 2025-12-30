@@ -17,7 +17,6 @@ const PlacesAnimation = ({ places }: { places: Place[] }) => {
     places.forEach((_, index) => {
       const tm = setTimeout(() => {
         setVisitedCount((prev) => Math.max(prev, index + 1));
-        console.log(index)
       }, step * index);
       tms.push(tm);
     });
